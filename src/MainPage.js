@@ -25,6 +25,9 @@ const MainPage = () => {
       setAttempts((prev) => prev + 1);
       setArro((prev) => [...prev, text.toLowerCase()]);
       setText("");
+      if (attempts >= 7) {
+        setEnabled(false);
+      }
     }
   };
 
@@ -277,6 +280,7 @@ const MainPage = () => {
         paddingRight={"2vw"}
         placeholder={"Guess the Object!"}
         fontFamily={"monospace"}
+        disabled={!enabled}
         value={text}
         onChange={(e) => {
           let value = e.target.value;
