@@ -7,8 +7,27 @@ import {
   Button,
   useToast,
   Box,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+
+/*
+Local storage for:
+  guesses
+  stats
+    Win%
+    Played
+    Max Streak
+    Current Streak
+    The stats (3 times, 8 times...)
+*/
 
 const MainPage = () => {
   const [enabled, setEnabled] = useState(true);
@@ -16,6 +35,8 @@ const MainPage = () => {
   const [guesses, setGuesses] = useState("");
   const [text, setText] = useState("");
   const [attempts, setAttempts] = useState(0);
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const ann = [];
   const [arro, setArro] = useState(ann);
@@ -57,13 +78,43 @@ const MainPage = () => {
 
   return (
     <Flex direction={"column"} alignItems={"center"}>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>How to Play</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Flex direction={"column"} alignItems={"center"} width={"100%"}>
+              <Flex
+                direction={"column"}
+                width={"100%"}
+                alignItems={"flex-start"}
+              >
+                <Text>Guess the thing in 6 guesses or less!</Text>
+                <Text>
+                  Each time you make a guess it will reveal another portion of
+                  the thing.
+                </Text>
+                <Text marginTop={"3vh"} fontSize={"1.6vw"}>
+                  Example:
+                </Text>
+              </Flex>
+              <Image
+                src={require("./assets/Example.png")}
+                alt="Example"
+                width={"18vw"}
+              />
+            </Flex>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
       <Flex
         direction={"row"}
         alignItems={"center"}
         gap={"1vw"}
         justifyContent={"center"}
       >
-        <Button background={"transparent"}>
+        <Button background={"transparent"} onClick={onOpen}>
           <Image src={require("./assets/Help.png")} alt="help" />
         </Button>
         <Text fontSize={"4vw"} fontFamily={"monospace"}>
