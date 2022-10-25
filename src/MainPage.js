@@ -36,8 +36,6 @@ const MainPage = () => {
   const toast = useToast();
   const ATTEMPTS = 7;
 
-  // localStorage.clear();
-
   const [enabled, setEnabled] = useState(true);
 
   const [lastWin, setLastWin] = useState("---");
@@ -90,7 +88,7 @@ const MainPage = () => {
     return Math.round((second - first) / (1000 * 60 * 60 * 24));
   }
 
-  const INDEX = datediff(parseDate(initialDate), parseDate(today));
+  let INDEX = datediff(parseDate(initialDate), parseDate(today));
   while (true) {
     if (INDEX >= arr.length) {
       INDEX -= arr.length;
@@ -247,12 +245,19 @@ const MainPage = () => {
     onOpen2();
   };
 
-  const startAttempts = () => {
+  // localStorage.clear();
+
+  const StartAttempts = () => {
     setAttempts((prev) => prev + 1);
-    setArro((prev) => [...prev, text.toLowerCase()]);
+
+    //this array does not update right away
+    useEffect(() => {
+      setArro((prev) => [...prev, text.toLowerCase()]);
+    });
+    console.log(text.toLowerCase());
 
     //PROBLEM HERE: for some reason skipping one in the beginning
-    console.log(arro.length);
+    console.log(arro);
 
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, "0");
@@ -385,11 +390,13 @@ const MainPage = () => {
       localStorage.getItem("guessesNames") !== null &&
       JSON.parse(localStorage.getItem("guessesNames"))[0] == today
     ) {
+      console.log(JSON.parse(localStorage.getItem("guessesNames")));
       for (
-        var i = 1;
+        let i = 1;
         i < JSON.parse(localStorage.getItem("guessesNames")).length;
         i++
       ) {
+        console.log(JSON.parse(localStorage.getItem("guessesNames"))[i]);
         arro.push(JSON.parse(localStorage.getItem("guessesNames"))[i]);
       }
       console.log(arro);
@@ -609,7 +616,12 @@ const MainPage = () => {
         justifyContent={"center"}
       >
         <Button background={"transparent"} onClick={onOpen}>
-          <Image src={require("./assets/Help.png")} alt="help" />
+          <Image
+            src={require("./assets/Help.png")}
+            width={"2.5vw"}
+            height={"2.5vw"}
+            alt="help"
+          />
         </Button>
         <Text fontSize={"4vw"} fontFamily={"monospace"}>
           THINGOLIO
@@ -621,7 +633,12 @@ const MainPage = () => {
           }}
           background={"transparent"}
         >
-          <Image src={require("./assets/Leaderboard.png")} alt="leaderboard" />
+          <Image
+            src={require("./assets/Leaderboard.png")}
+            width={"2.5vw"}
+            height={"2.5vw"}
+            alt="leaderboard"
+          />
         </Button>
       </Flex>
       <Flex
@@ -845,7 +862,7 @@ const MainPage = () => {
             if (text == "") {
               return;
             }
-            startAttempts();
+            StartAttempts();
           }
         }}
       />
