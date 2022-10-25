@@ -251,9 +251,7 @@ const MainPage = () => {
     setAttempts((prev) => prev + 1);
 
     //this array does not update right away
-    useEffect(() => {
-      setArro((prev) => [...prev, text.toLowerCase()]);
-    });
+    setArro((prev) => [...prev, text.toLowerCase()]);
     console.log(text.toLowerCase());
 
     //PROBLEM HERE: for some reason skipping one in the beginning
@@ -397,7 +395,10 @@ const MainPage = () => {
         i++
       ) {
         console.log(JSON.parse(localStorage.getItem("guessesNames"))[i]);
-        arro.push(JSON.parse(localStorage.getItem("guessesNames"))[i]);
+        setArro((prev) => [
+          ...prev,
+          JSON.parse(localStorage.getItem("guessesNames"))[i],
+        ]);
       }
       console.log(arro);
       setAttempts(arro.length);
